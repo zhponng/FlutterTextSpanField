@@ -20,6 +20,8 @@ class TextSpanBuilder {
   /// 最后一次操作的光标
   TextSelection _lastTextSelection;
 
+  Function _userControllerListener = (){};
+
   /// 绑定数据值组件
   void bind({
     TextEditingController textEditingController,
@@ -56,6 +58,10 @@ class TextSpanBuilder {
         oldSelection.end != selection.end) {
       this._lastTextSelection = selection;
       this._selectionChangeListener(oldText, text, oldSelection, selection);
+    }
+
+    if (this._userControllerListener != null){
+      this._userControllerListener();
     }
   }
 
@@ -483,4 +489,9 @@ class TextSpanBuilder {
 
   /// [公开方法] 获得Controller
   TextEditingController get controller => _textEditingController;
+
+  /// [公开方法] 增加自定义的监听方法
+  void addControllerListener(Function listener) {
+    _userControllerListener = listener;
+  }
 }
